@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/storage.dart';
 import 'package:todolist/app_theme.dart';
+import 'package:todolist/search_bar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Todo List',
-      theme: ThemeData(primarySwatch: Colors.amber),
+      theme: AppTheme.lightTheme,
       home: const TodoHomePage(),
     );
   }
@@ -29,6 +30,18 @@ class _TodoHomePageState extends State<TodoHomePage> {
   final List<Map<String, dynamic>> _todos = []; //Daftar Tugas
   final TextEditingController _controller =
       TextEditingController(); //input teks
+  final TextEditingController _searchController = TextEditingController();
+  String _searchText = "";
+
+  @override
+  void initState() {
+    super.initState();
+    TodoStorage.loadTodos().then((loadedTodos) {
+      setState(() {
+        _todos.addAll(loadedTodos);
+      });
+    });
+  }
 
   void _addTodo() {
     final text = _controller.text;
@@ -57,23 +70,29 @@ class _TodoHomePageState extends State<TodoHomePage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    TodoStorage.loadTodos().then((loadedTodos) {
-      setState(() {
-        _todos.addAll(loadedTodos);
-      });
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final filteredTodos =
+        _todos.where((todo) {
+          return todo['title'].toString().toLowerCase().contains(
+            _searchText.toLowerCase(),
+          );
+        }).toList();
+
     return Scaffold(
       appBar: AppBar(title: const Text('Daftar Tugas')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            SearchBarWidget(
+              controller: _searchController,
+              onChanged: (text) {
+                setState(() {
+                  _searchText = text;
+                });
+              },
+            ),
+            const SizedBox(height: 16),
             Row(
               children: [
                 Expanded(
@@ -95,26 +114,30 @@ class _TodoHomePageState extends State<TodoHomePage> {
             const SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
-                itemCount: _todos.length,
+                itemCount: filteredTodos.length,
                 itemBuilder: (context, index) {
+                  final todo =
+                      filteredTodos[index]; //ambil data dari hasil filter
+                  final originalIndex = _todos.indexOf(todo);
+
                   return Card(
                     child: ListTile(
                       leading: Checkbox(
-                        value: _todos[index]['isDone'],
-                        onChanged: (_) => _toggleDone(index),
+                        value: todo['isDone'],
+                        onChanged: (_) => _toggleDone(originalIndex),
                       ),
                       title: Text(
-                        _todos[index]['title'],
+                        todo['title'],
                         style: TextStyle(
                           decoration:
-                              _todos[index]['isDone']
+                              todo['isDone']
                                   ? TextDecoration.lineThrough
                                   : null,
                         ),
                       ),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
-                        onPressed: () => _removeTodo(index),
+                        onPressed: () => _removeTodo(originalIndex),
                       ),
                     ),
                   );
