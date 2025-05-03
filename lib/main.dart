@@ -79,7 +79,16 @@ class _TodoHomePageState extends State<TodoHomePage> {
         }).toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Daftar Tugas')),
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'Daftar Tugas',
+          style: TextStyle(
+            fontWeight: FontWeight.bold, //biar tulisannya tebal
+            fontSize: 20,
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -107,7 +116,10 @@ class _TodoHomePageState extends State<TodoHomePage> {
                 const SizedBox(width: 8),
                 ElevatedButton(
                   onPressed: _addTodo,
-                  child: const Text('Tambah'),
+                  child: const Text(
+                    'Tambah',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                 ),
               ],
             ),

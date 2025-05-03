@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
     primarySwatch: Colors.amber,
-    scaffoldBackgroundColor: Colors.grey[100],
+    scaffoldBackgroundColor: const Color.fromARGB(
+      255,
+      255,
+      218,
+      218,
+    ), //warna background
     fontFamily: 'Robeto',
     textTheme: const TextTheme(
       titleLarge: TextStyle(
@@ -16,8 +21,18 @@ class AppTheme {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.amber[700],
-        foregroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(
+          255,
+          244,
+          159,
+          159,
+        ), //warna button "tambah"
+        foregroundColor: const Color.fromARGB(
+          255,
+          253,
+          253,
+          253,
+        ), //warna "tambah"
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
       ),
@@ -25,16 +40,18 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       filled: true,
-      fillColor: Colors.white,
+      fillColor: const Color.fromARGB(255, 252, 230, 230),
     ),
     cardTheme: CardTheme(
-      color: Colors.white,
+      color: const Color.fromARGB(255, 252, 230, 230),
       elevation: 3,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       margin: const EdgeInsets.symmetric(vertical: 6),
     ),
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStatePropertyAll(Colors.amber),
+      fillColor: MaterialStatePropertyAll(
+        const Color.fromARGB(255, 244, 159, 159), //warna checklist
+      ),
     ),
   );
 }
