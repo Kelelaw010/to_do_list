@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todolist/main.dart';
+import 'package:todolist/storage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Todo List',
-      theme: ThemeData(primarySwatch: Colors.yellow),
+      theme: ThemeData(primarySwatch: Colors.amber),
       home: const TodoHomePage(),
     );
   }
@@ -25,7 +25,7 @@ class TodoHomePage extends StatefulWidget {
 }
 
 class _TodoHomePageState extends State<TodoHomePage> {
-  final List<String> _todos = []; //Daftar Tugas
+  final List<Map<String, dynamic>> _todos = []; //Daftar Tugas
   final TextEditingController _controller =
       TextEditingController(); //input teks
 
@@ -33,15 +33,34 @@ class _TodoHomePageState extends State<TodoHomePage> {
     final text = _controller.text;
     if (text.isNotEmpty) {
       setState(() {
-        _todos.add(text);
+        _todos.add({'title': text, 'isDone': false});
         _controller.clear();
       });
+      //pemanggilan save
+      TodoStorage.saveTodos(_todos);
     }
   }
 
   void _removeTodo(int index) {
     setState(() {
       _todos.removeAt(index);
+    });
+  }
+
+  void _toggleDone(int index) {
+    setState(() {
+      _todos[index]['isDone'] = !_todos[index]['isDone'];
+    });
+    TodoStorage.saveTodos(_todos);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    TodoStorage.loadTodos().then((loadedTodos) {
+      setState(() {
+        _todos.addAll(loadedTodos);
+      });
     });
   }
 
@@ -78,7 +97,19 @@ class _TodoHomePageState extends State<TodoHomePage> {
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      title: Text(_todos[index]),
+                      leading: Checkbox(
+                        value: _todos[index]['isDone'],
+                        onChanged: (_) => _toggleDone(index),
+                      ),
+                      title: Text(
+                        _todos[index]['title'],
+                        style: TextStyle(
+                          decoration:
+                              _todos[index]['isDone']
+                                  ? TextDecoration.lineThrough
+                                  : null,
+                        ),
+                      ),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () => _removeTodo(index),
