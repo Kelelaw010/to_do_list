@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todolist/storage.dart';
+import 'package:todolist/app_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,6 +46,7 @@ class _TodoHomePageState extends State<TodoHomePage> {
     setState(() {
       _todos.removeAt(index);
     });
+    TodoStorage.saveTodos(_todos);
   }
 
   void _toggleDone(int index) {
