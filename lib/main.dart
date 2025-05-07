@@ -19,6 +19,10 @@ class MyApp extends StatelessWidget {
           fontFamily: 'CascadiaMono', // Menambahkan font ke textTheme
         ),
       ),
+      darkTheme: AppTheme.darkTheme.copyWith(
+        textTheme: AppTheme.darkTheme.textTheme.apply(fontFamily: 'RobotoSlab'),
+      ),
+      themeMode: ThemeMode.system, //otomatis mengikuti sistem
       home: const TodoHomePage(),
     );
   }
@@ -115,6 +119,12 @@ class TodoHomePageState extends State<TodoHomePage> {
                       labelText: 'tambahkan tugas',
                       border: OutlineInputBorder(),
                     ),
+                    //langsung enter aja...
+                    onSubmitted: (value) {
+                      if (value.trim().isNotEmpty) {
+                        _addTodo();
+                      }
+                    }, // bisa menekan Enter untuk menambahkan tugas
                   ),
                 ),
                 const SizedBox(width: 8),
