@@ -5,10 +5,11 @@ class SearchBarWidget extends StatelessWidget {
   final Function(String) onChanged;
 
   const SearchBarWidget({
-    Key? key,
+    super.key, // Memanfaatkan super parameter untuk 'key'
     required this.controller,
     required this.onChanged,
-  }) : super(key: key);
+  });
+
   @override
   Widget build(BuildContext context) {
     return TextField(

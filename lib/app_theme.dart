@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
-    primarySwatch: Colors.amber,
+    primarySwatch: Colors.blue,
     scaffoldBackgroundColor: const Color.fromARGB(
       255,
       255,
       218,
       218,
     ), //warna background
-    fontFamily: 'Robeto',
+    fontFamily: 'CascadiaMono',
     textTheme: const TextTheme(
       titleLarge: TextStyle(
         fontSize: 24,
@@ -48,7 +48,7 @@ class AppTheme {
       margin: const EdgeInsets.symmetric(vertical: 6),
     ),
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStatePropertyAll(
+      fillColor: WidgetStatePropertyAll(
         const Color.fromARGB(255, 244, 159, 159), //warna checklist
       ),
     ),

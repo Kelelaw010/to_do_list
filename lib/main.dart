@@ -14,7 +14,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Todo List',
-      theme: AppTheme.lightTheme,
+      theme: AppTheme.lightTheme.copyWith(
+        textTheme: AppTheme.lightTheme.textTheme.apply(
+          fontFamily: 'CascadiaMono', // Menambahkan font ke textTheme
+        ),
+      ),
       home: const TodoHomePage(),
     );
   }
@@ -23,10 +27,10 @@ class MyApp extends StatelessWidget {
 class TodoHomePage extends StatefulWidget {
   const TodoHomePage({super.key});
   @override
-  _TodoHomePageState createState() => _TodoHomePageState();
+  TodoHomePageState createState() => TodoHomePageState();
 }
 
-class _TodoHomePageState extends State<TodoHomePage> {
+class TodoHomePageState extends State<TodoHomePage> {
   final List<Map<String, dynamic>> _todos = []; //Daftar Tugas
   final TextEditingController _controller =
       TextEditingController(); //input teks
